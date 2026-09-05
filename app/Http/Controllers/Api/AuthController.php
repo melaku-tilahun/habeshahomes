@@ -136,4 +136,51 @@ class AuthController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Update authenticated user profile.
+     */
+    public function updateProfile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:30'],
+            'bio' => ['nullable', 'string', 'max:1000'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        if (!empty($validated['name'])) {
+            $user->name = $validated['name'];
+        }
+        if (array_key_exists('phone', $validated)) {
+            $user->phone = $validated['phone'];
+        }
+        if (array_key_exists('bio', $validated)) {
+            $user->bio = $validated['bio'];
+        }
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Profile updated successfully.',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'user_type' => $user->user_type,
+                'phone' => $user->phone,
+                'profile_photo' => $user->profile_photo,
+                'bio' => $user->bio,
+                'is_verified' => $user->is_verified,
+                'last_active_at' => $user->last_active_at,
+                'created_at' => $user->created_at,
+            ],
+        ]);
+    }
 }

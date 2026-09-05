@@ -1,8 +1,9 @@
 import { authState } from '../state/auth.js';
+import { Icons } from './Icons.js';
 
 export function renderPropertyCard(property) {
     const imageUrl = property.featured_image || 
-        (property.images && property.images.length > 0 ? property.images[0].image_url : null) ||
+        (property.images && property.images.length > 0 ? (property.images[0].large_path || property.images[0].image_url) : null) ||
         'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80';
 
     let badgeClass = 'badge-rent';
@@ -34,28 +35,25 @@ export function renderPropertyCard(property) {
             <div class="card-body">
                 <h3 class="card-title" title="${property.title}">${property.title}</h3>
                 <div class="card-location">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--emerald-500);">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
+                    <span style="color: var(--emerald-500); display: inline-flex;">${Icons.pin}</span>
                     <span>${property.sub_city ? property.sub_city + ', ' : ''}${property.city}</span>
                 </div>
                 <div class="card-specs">
                     ${property.bedrooms ? `
                         <div class="spec-item">
-                            <span>🛏️</span>
+                            <span style="color: var(--text-muted); display: inline-flex;">${Icons.bed}</span>
                             <span>${property.bedrooms} Beds</span>
                         </div>
                     ` : ''}
                     ${property.bathrooms ? `
                         <div class="spec-item">
-                            <span>🚿</span>
+                            <span style="color: var(--text-muted); display: inline-flex;">${Icons.bath}</span>
                             <span>${property.bathrooms} Baths</span>
                         </div>
                     ` : ''}
                     ${property.square_meters ? `
                         <div class="spec-item">
-                            <span>📐</span>
+                            <span style="color: var(--text-muted); display: inline-flex;">${Icons.area}</span>
                             <span>${property.square_meters} m²</span>
                         </div>
                     ` : ''}

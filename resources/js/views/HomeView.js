@@ -1,6 +1,7 @@
 import api from '../services/api.js';
 import { renderPropertyCard } from '../components/PropertyCard.js';
 import { navigateTo } from '../router.js';
+import { Icons } from '../components/Icons.js';
 
 export async function renderHomeView(container) {
     container.innerHTML = `
@@ -8,7 +9,8 @@ export async function renderHomeView(container) {
         <section class="hero">
             <div class="container">
                 <div class="hero-tag">
-                    <span>✨</span> Ethiopia's Premier Dual-Mode Real Estate Network
+                    <span style="display: inline-flex; align-items: center;">${Icons.badgeVerified}</span>
+                    <span>Verified Real Estate Network of Ethiopia</span>
                 </div>
                 <h1 class="hero-title">
                     Discover Luxury Stays & Prime Real Estate in <span class="gradient-text">Addis Ababa & Beyond</span>
@@ -142,18 +144,24 @@ export async function renderHomeView(container) {
         <section style="padding: 70px 0;">
             <div class="container">
                 <div class="grid grid-3">
-                    <div class="detail-card text-center">
-                        <div style="font-size: 2.2rem; margin-bottom: 12px;">🛡️</div>
+                    <div class="detail-card text-center" style="padding: 32px 24px;">
+                        <div style="margin: 0 auto 16px; display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);">
+                            ${Icons.shield}
+                        </div>
                         <h3 class="mb-2">Escrow-Backed Payments</h3>
                         <p>Funds are secured safely until check-in or lease agreement verification via Chapa and TeleBirr.</p>
                     </div>
-                    <div class="detail-card text-center">
-                        <div style="font-size: 2.2rem; margin-bottom: 12px;">📑</div>
+                    <div class="detail-card text-center" style="padding: 32px 24px;">
+                        <div style="margin: 0 auto 16px; display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25);">
+                            ${Icons.document}
+                        </div>
                         <h3 class="mb-2">100% Verified Titles</h3>
                         <p>Every long-term listing and sale contract has verified ownership documents to protect buyers.</p>
                     </div>
-                    <div class="detail-card text-center">
-                        <div style="font-size: 2.2rem; margin-bottom: 12px;">⚡</div>
+                    <div class="detail-card text-center" style="padding: 32px 24px;">
+                        <div style="margin: 0 auto 16px; display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25);">
+                            ${Icons.zap}
+                        </div>
                         <h3 class="mb-2">Instant Stays & Concierge</h3>
                         <p>Holiday lets come furnished with high-speed WiFi, backup power generator, and water reservoirs.</p>
                     </div>

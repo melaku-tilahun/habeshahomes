@@ -26,10 +26,13 @@
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <div class="brand-logo mb-4">
-                        <div class="brand-flag">
-                            <span></span><span></span><span></span>
-                        </div>
+                    <div class="brand-logo mb-4" style="color: #fff;">
+                        <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="36" height="36" rx="10" fill="#0f172a"/>
+                            <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="#1e293b"/>
+                            <path d="M18 7L8 15V28H14V21H22V28H28V15L18 7Z" fill="rgba(16,185,129,0.35)" stroke="#10b981" stroke-width="1.75" stroke-linejoin="round"/>
+                            <circle cx="18" cy="14" r="2" fill="#f59e0b"/>
+                        </svg>
                         <span>Habesha<span style="color: var(--emerald-500);">Homes</span></span>
                     </div>
                     <p style="font-size: 0.85rem; max-width: 320px; line-height: 1.7;">
@@ -48,12 +51,12 @@
                 </div>
 
                 <div>
-                    <h4 class="mb-4" style="color: #fff; font-size: 0.95rem;">Hosts & Agents</h4>
+                    <h4 class="mb-4" style="color: #fff; font-size: 0.95rem;">User & Host Portal</h4>
                     <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+                        <li><a href="/profile" data-link>My Profile</a></li>
+                        <li><a href="/dashboard" data-link>My Bookings</a></li>
                         <li><a href="/dashboard/listings" data-link>List Your Residence</a></li>
-                        <li><a href="/dashboard" data-link>Host Portal</a></li>
                         <li><a href="#" onclick="alert('Host guarantee: 100% payout protection via Chapa escrow.'); return false;">Host Protection</a></li>
-                        <li><a href="#" onclick="alert('Inspection guidelines: ISO certified electrical and plumbing standards.'); return false;">Verification Rules</a></li>
                     </ul>
                 </div>
 

@@ -4,6 +4,7 @@ import { openBookingModal } from '../components/BookingModal.js';
 import { openAuthModal } from '../components/AuthModal.js';
 import { showToast } from '../components/Toast.js';
 import { navigateTo } from '../router.js';
+import { Icons } from '../components/Icons.js';
 
 export async function renderPropertyDetailView(container, propertyId) {
     container.innerHTML = `
@@ -21,7 +22,7 @@ export async function renderPropertyDetailView(container, propertyId) {
         renderPropertyDetails(container, property);
     } catch (err) {
         container.querySelector('#prop-detail-loading').innerHTML = `
-            <div style="color: var(--coral-500);">
+            <div style="color: var(--coral-500); text-align: center; padding: 40px;">
                 <h3>Property Not Found</h3>
                 <p class="mt-2">${err.friendlyMessage || 'The requested property could not be loaded or is no longer published.'}</p>
                 <a href="/properties" class="btn btn-outline btn-sm mt-4" data-link>← Back to All Properties</a>
@@ -41,9 +42,9 @@ function renderPropertyDetails(container, property) {
         { image_url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80' }
     ];
 
-    const mainImg = images[0]?.image_url;
-    const thumb1 = images[1]?.image_url || mainImg;
-    const thumb2 = images[2]?.image_url || mainImg;
+    const mainImg = images[0]?.large_path || images[0]?.image_url;
+    const thumb1 = images[1]?.medium_path || images[1]?.image_url || mainImg;
+    const thumb2 = images[2]?.medium_path || images[2]?.image_url || mainImg;
 
     const isHoliday = property.listing_type === 'holiday_let';
     const isRent = property.listing_type === 'rent';
@@ -52,7 +53,6 @@ function renderPropertyDetails(container, property) {
     const priceFormatted = authState.formatPrice(property.price, property.currency || 'ETB');
     const priceSuffix = isHoliday ? '/ night' : isRent ? '/ month' : '';
 
-    // Standard amenities list
     const amenities = property.amenities || ['High-Speed WiFi', 'Backup Diesel Generator', '2,000L Water Reservoir', '24/7 Gated Security', 'Dedicated Parking', 'Elevator Access'];
 
     content.innerHTML = `
@@ -66,7 +66,7 @@ function renderPropertyDetails(container, property) {
             <div>
                 <h1 style="font-size: clamp(1.8rem, 3vw, 2.5rem);">${property.title}</h1>
                 <div class="card-location mt-2" style="font-size: 0.95rem;">
-                    <span style="color: var(--emerald-500);">📍</span>
+                    <span style="color: var(--emerald-500); display: inline-flex;">${Icons.pin}</span>
                     <span>${property.address ? property.address + ', ' : ''}${property.sub_city ? property.sub_city + ', ' : ''}${property.city}, Ethiopia</span>
                 </div>
             </div>
@@ -74,7 +74,9 @@ function renderPropertyDetails(container, property) {
                 <span class="badge ${isHoliday ? 'badge-holiday' : isRent ? 'badge-rent' : 'badge-sale'}" style="font-size: 0.85rem; padding: 6px 14px;">
                     ${isHoliday ? 'Holiday Stay' : isRent ? 'For Rent' : 'For Sale'}
                 </span>
-                <span class="badge badge-verified" style="font-size: 0.85rem; padding: 6px 14px;">✓ Verified Title</span>
+                <span class="badge badge-verified" style="font-size: 0.85rem; padding: 6px 14px;">
+                    <span style="display: inline-flex;">${Icons.check}</span> Verified Title
+                </span>
             </div>
         </div>
 
@@ -97,19 +99,27 @@ function renderPropertyDetails(container, property) {
                 <div class="detail-card mb-6 flex justify-between items-center flex-wrap gap-4" style="padding: 20px 28px;">
                     <div class="text-center">
                         <div style="font-size: 1.2rem; font-weight: 700;">${property.bedrooms || '—'}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Bedrooms</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 4px;">
+                            ${Icons.bed} Bedrooms
+                        </div>
                     </div>
                     <div class="text-center">
                         <div style="font-size: 1.2rem; font-weight: 700;">${property.bathrooms || '—'}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Bathrooms</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 4px;">
+                            ${Icons.bath} Bathrooms
+                        </div>
                     </div>
                     <div class="text-center">
                         <div style="font-size: 1.2rem; font-weight: 700;">${property.square_meters ? property.square_meters + ' m²' : '—'}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Living Area</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 4px;">
+                            ${Icons.area} Living Area
+                        </div>
                     </div>
                     <div class="text-center">
                         <div style="font-size: 1.2rem; font-weight: 700;">${property.is_furnished ? 'Furnished' : 'Unfurnished'}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Furnishing</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 4px;">
+                            ${Icons.building} Furnishing
+                        </div>
                     </div>
                 </div>
 
@@ -128,7 +138,7 @@ function renderPropertyDetails(container, property) {
                     <div class="amenities-grid">
                         ${amenities.map(a => `
                             <div class="amenity-chip">
-                                <span style="color: var(--emerald-500);">✓</span>
+                                <span style="display: inline-flex;">${Icons.check}</span>
                                 <span>${a}</span>
                             </div>
                         `).join('')}
@@ -139,13 +149,19 @@ function renderPropertyDetails(container, property) {
                 <div class="detail-card mb-6">
                     <h3>Listed by Verified Agent</h3>
                     <div class="flex items-center gap-4 mt-4">
-                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--bg-surface); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid var(--emerald-500);">
-                            👤
+                        <div style="width: 54px; height: 54px; border-radius: 50%; background: var(--bg-surface); display: flex; align-items: center; justify-content: center; border: 2px solid var(--emerald-500); color: var(--emerald-500);">
+                            ${Icons.user}
                         </div>
                         <div>
                             <h4 style="margin-bottom: 2px;">${property.user ? property.user.name : 'HabeshaHomes Concierge'}</h4>
-                            <p style="font-size: 0.85rem; color: var(--emerald-500);">Verified Real Estate Partner</p>
-                            ${property.user && property.user.phone ? `<p style="font-size: 0.85rem; color: var(--text-muted);">📞 ${property.user.phone}</p>` : ''}
+                            <p style="font-size: 0.85rem; color: var(--emerald-500); display: flex; align-items: center; gap: 4px;">
+                                ${Icons.check} Verified Real Estate Partner
+                            </p>
+                            ${property.user && property.user.phone ? `
+                                <p style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                    ${Icons.phone} ${property.user.phone}
+                                </p>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
@@ -236,7 +252,6 @@ function renderPropertyDetails(container, property) {
         const availStatus = content.querySelector('#availability-status');
         const pricingCalc = content.querySelector('#pricing-calculator');
 
-        // Set min check-in date to today
         const today = new Date().toISOString().split('T')[0];
         checkInInput.min = today;
 
@@ -271,7 +286,7 @@ function renderPropertyDetails(container, property) {
                 if (res.data.available) {
                     availStatus.style.background = 'rgba(16, 185, 129, 0.15)';
                     availStatus.style.color = 'var(--emerald-500)';
-                    availStatus.textContent = '✓ Dates are available for booking!';
+                    availStatus.innerHTML = `<span style="display: inline-flex; vertical-align: middle; margin-right: 4px;">${Icons.check}</span> Dates are available for booking!`;
 
                     estimatedSubtotal = res.data.estimated_price;
                     const platformFee = Math.round(estimatedSubtotal * 0.05);

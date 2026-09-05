@@ -1,6 +1,7 @@
 import api from '../services/api.js';
 import { renderPropertyCard } from '../components/PropertyCard.js';
 import { navigateTo } from '../router.js';
+import { Icons } from '../components/Icons.js';
 
 export async function renderPropertiesView(container, queryParams = {}) {
     const currentParams = new URLSearchParams(window.location.search);
@@ -202,7 +203,9 @@ export async function renderPropertiesView(container, queryParams = {}) {
             if (items.length === 0) {
                 grid.innerHTML = `
                     <div style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-lg);">
-                        <div style="font-size: 2.5rem; margin-bottom: 12px;">🏡</div>
+                        <div style="margin: 0 auto 16px; display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);">
+                            ${Icons.home}
+                        </div>
                         <h3>No Properties Found</h3>
                         <p class="mt-2">Try adjusting your filters, price range, or search keyword.</p>
                     </div>

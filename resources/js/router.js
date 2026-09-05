@@ -2,6 +2,7 @@ import { renderHomeView } from './views/HomeView.js';
 import { renderPropertiesView } from './views/PropertiesView.js';
 import { renderPropertyDetailView } from './views/PropertyDetailView.js';
 import { renderDashboardView } from './views/DashboardView.js';
+import { renderProfileView } from './views/ProfileView.js';
 import { renderNavbar } from './components/Navbar.js';
 import { authState } from './state/auth.js';
 
@@ -54,6 +55,12 @@ export function handleRoute(path, shouldScroll = true) {
 
     if (path === '/properties' || path.startsWith('/properties?')) {
         currentRouteHandler = () => renderPropertiesView(appRoot);
+        currentRouteHandler();
+        return;
+    }
+
+    if (path === '/profile' || path === '/dashboard/profile') {
+        currentRouteHandler = () => renderProfileView(appRoot);
         currentRouteHandler();
         return;
     }

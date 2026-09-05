@@ -215,25 +215,25 @@
 
         <div class="grid">
             <div class="card">
-                <h3>🔍 Search & Discovery</h3>
+                <h3>Search & Discovery</h3>
                 <p>Full-text multilingual search index with Amharic stemming and automatic MySQL fallback.</p>
                 <span class="endpoint">GET /api/search</span>
             </div>
 
             <div class="card">
-                <h3>🏡 Property Inventory</h3>
+                <h3>Property Inventory</h3>
                 <p>Comprehensive CRUD endpoints with multi-image processing and role policies.</p>
                 <span class="endpoint">GET /api/properties</span>
             </div>
 
             <div class="card">
-                <h3>🔒 Concurrency & Booking</h3>
+                <h3>Concurrency & Booking</h3>
                 <p>Atomic Redis Lua calendar reservation locks, preventing double booking down to the millisecond.</p>
                 <span class="endpoint">POST /api/properties/{id}/book</span>
             </div>
 
             <div class="card">
-                <h3>💳 Dual Payment Webhooks</h3>
+                <h3>Dual Payment Webhooks</h3>
                 <p>Chapa HMAC-SHA256 and TeleBirr RSA-SHA256 signature verification with automated PDF invoices.</p>
                 <span class="endpoint">POST /api/payments/callback/{gw}</span>
             </div>

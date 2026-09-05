@@ -3,6 +3,7 @@ import { authState } from '../state/auth.js';
 import { showToast } from '../components/Toast.js';
 import { openAuthModal } from '../components/AuthModal.js';
 import { navigateTo } from '../router.js';
+import { Icons } from '../components/Icons.js';
 
 export async function renderDashboardView(container, subpath = '') {
     if (!authState.isLoggedIn()) {
@@ -20,12 +21,14 @@ export async function renderDashboardView(container, subpath = '') {
     const isAgent = authState.isAgent();
     let currentTab = subpath === 'listings' && isAgent ? 'listings' : 'bookings';
 
+    const initials = user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+
     container.innerHTML = `
         <div class="container" style="padding-top: 40px; padding-bottom: 80px;">
             <div class="dashboard-header">
                 <div class="flex items-center gap-4">
-                    <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border: 2px solid var(--emerald-500);">
-                        👤
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--emerald-500), var(--indigo-500)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; border: 2px solid rgba(255, 255, 255, 0.15); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
+                        ${initials}
                     </div>
                     <div>
                         <h2>${user.name}</h2>
@@ -39,14 +42,20 @@ export async function renderDashboardView(container, subpath = '') {
                 </div>
 
                 <div class="dashboard-tabs">
-                    <button class="dashboard-tab ${currentTab === 'bookings' ? 'active' : ''}" data-tab="bookings">
-                        My Bookings
+                    <button class="dashboard-tab ${currentTab === 'bookings' ? 'active' : ''}" data-tab="bookings" style="display: inline-flex; align-items: center; gap: 6px;">
+                        ${Icons.suitcase}
+                        <span>My Bookings</span>
                     </button>
                     ${isAgent ? `
-                        <button class="dashboard-tab ${currentTab === 'listings' ? 'active' : ''}" data-tab="listings">
-                            My Properties
+                        <button class="dashboard-tab ${currentTab === 'listings' ? 'active' : ''}" data-tab="listings" style="display: inline-flex; align-items: center; gap: 6px;">
+                            ${Icons.building}
+                            <span>My Properties</span>
                         </button>
                     ` : ''}
+                    <a href="/profile" class="dashboard-tab" data-link style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+                        ${Icons.user}
+                        <span>Profile Settings</span>
+                    </a>
                 </div>
             </div>
 
@@ -272,7 +281,9 @@ async function loadUserBookings(targetEl) {
         if (bookings.length === 0) {
             targetEl.innerHTML = `
                 <div class="detail-card text-center" style="padding: 60px 20px;">
-                    <div style="font-size: 2.5rem; margin-bottom: 12px;">🧳</div>
+                    <div style="margin: 0 auto 16px; display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);">
+                        ${Icons.suitcase}
+                    </div>
                     <h3>No Active Reservations</h3>
                     <p class="mt-2">You haven't booked any holiday stays yet. Discover luxury options in Addis Ababa!</p>
                     <a href="/properties?listing_type=holiday_let" class="btn btn-primary mt-4" data-link>Explore Holiday Stays</a>
@@ -387,7 +398,9 @@ async function loadUserListings(targetEl) {
         if (myProps.length === 0) {
             tableArea.innerHTML = `
                 <div class="detail-card text-center" style="padding: 40px 20px;">
-                    <div style="font-size: 2.5rem; margin-bottom: 12px;">🏢</div>
+                    <div style="margin: 0 auto 16px; display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25);">
+                        ${Icons.building}
+                    </div>
                     <h4>No Properties Listed Yet</h4>
                     <p class="mt-2">Start monetizing your villa, apartment or condo with Ethiopian & diaspora guests.</p>
                 </div>

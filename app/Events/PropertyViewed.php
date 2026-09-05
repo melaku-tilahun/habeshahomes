@@ -12,9 +12,9 @@ class PropertyViewed
 
     public function __construct(
         public Property $property,
-        public ?int $userId,
-        public string $ipAddress,
-        public string $userAgent,
-        public ?string $sessionId
+        public ?string $ipAddress = null,
+        public ?string $userAgent = null,
+        public ?int $userId = null,
+        public ?string $sessionId = null
     ) {}
 }
