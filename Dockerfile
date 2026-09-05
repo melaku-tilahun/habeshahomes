@@ -1,31 +1,30 @@
-FROM ubuntu:22.04
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PHP_VERSION=8.2
 
-# Install system dependencies
+# Install system dependencies & PHP 8.2 natively from Debian Bookworm repositories
 RUN apt-get update && apt-get install -y \
     nginx \
-    php${PHP_VERSION}-fpm \
-    php${PHP_VERSION}-cli \
-    php${PHP_VERSION}-common \
-    php${PHP_VERSION}-mysql \
-    php${PHP_VERSION}-zip \
-    php${PHP_VERSION}-gd \
-    php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-curl \
-    php${PHP_VERSION}-xml \
-    php${PHP_VERSION}-bcmath \
-    php${PHP_VERSION}-json \
-    php${PHP_VERSION}-intl \
-    php${PHP_VERSION}-redis \
-    php${PHP_VERSION}-opcache \
+    php8.2-fpm \
+    php8.2-cli \
+    php8.2-common \
+    php8.2-mysql \
+    php8.2-zip \
+    php8.2-gd \
+    php8.2-mbstring \
+    php8.2-curl \
+    php8.2-xml \
+    php8.2-bcmath \
+    php8.2-intl \
+    php-redis \
+    php8.2-opcache \
     supervisor \
     curl \
     git \
     unzip \
     openssl \
-    mysql-client \
+    default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -33,7 +32,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Configure PHP-FPM to use Unix socket matching Nginx FastCGI configuration
 RUN mkdir -p /var/run/php && chown -R www-data:www-data /var/run/php \
-    && sed -i 's/^;pid = /pid = /' /etc/php/${PHP_VERSION}/fpm/php-fpm.conf \
     && sed -i 's|^listen = .*|listen = /var/run/php/php8.2-fpm.sock|' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf \
     && sed -i 's/^;listen.owner = .*/listen.owner = www-data/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf \
     && sed -i 's/^;listen.group = .*/listen.group = www-data/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf \
@@ -59,12 +57,22 @@ RUN mkdir -p /etc/ssl/certs /etc/ssl/private \
 # Setup app directory
 WORKDIR /var/www/habeshahomes
 COPY . /var/www/habeshahomes
-RUN chown -R www-data:www-data /var/www/habeshahomes \
+
+RUN mkdir -p /var/www/habeshahomes/storage/app/public \
+             /var/www/habeshahomes/storage/framework/cache/data \
+             /var/www/habeshahomes/storage/framework/sessions \
+             /var/www/habeshahomes/storage/framework/views \
+             /var/www/habeshahomes/storage/logs \
+             /var/www/habeshahomes/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/habeshahomes \
     && chmod -R 775 /var/www/habeshahomes/storage \
     && chmod -R 775 /var/www/habeshahomes/bootstrap/cache
 
-# Install dependencies
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+# Install PHP dependencies (force HTTP 1.1 via curlrc to prevent codeload stream drops and enable source fallback)
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_PROCESS_TIMEOUT=2000
+RUN echo "http1.1" >> /root/.curlrc \
+    && composer install --no-dev --no-interaction --optimize-autoloader --no-security-blocking
 
 # Nginx config
 COPY docker/nginx/rate_limits.conf /etc/nginx/conf.d/rate_limits.conf

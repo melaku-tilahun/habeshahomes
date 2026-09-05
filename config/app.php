@@ -16,6 +16,4 @@ return [
         'driver' => 'file',
         'store' => 'database',
     ],
-    'providers' => require __DIR__.'/../bootstrap/providers.php',
-    'aliases' => [],
 ];

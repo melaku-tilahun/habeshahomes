@@ -39,9 +39,6 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
     volumes:
       - mysql_data:/var/lib/mysql
-    # Only bind to localhost for dev/admin access, not 0.0.0.0
-    ports:
-      - "127.0.0.1:${DB_PORT:-3306}:3306"
     networks:
       - habeshahomes
 

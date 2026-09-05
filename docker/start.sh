@@ -26,11 +26,19 @@ php artisan storage:link --force || true
 
 # Start PHP-FPM
 echo "==> Starting PHP-FPM..."
-service php8.2-fpm start
+if [ -x /etc/init.d/php8.2-fpm ]; then
+    /etc/init.d/php8.2-fpm start
+else
+    service php8.2-fpm start
+fi
 
 # Start Nginx
 echo "==> Starting Nginx..."
-service nginx start
+if [ -x /etc/init.d/nginx ]; then
+    /etc/init.d/nginx start
+else
+    service nginx start
+fi
 
 # Start Supervisor
 echo "==> Starting Supervisor (Queue workers & Scheduler)..."
